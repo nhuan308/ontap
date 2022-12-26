@@ -1,54 +1,56 @@
-﻿using System;
+using cau1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using CheckTest.Models;
 
-namespace CheckTest.Controllers
+namespace cau1.Controllers
 {
     public class DefaultController : ApiController
     {
-        private NhanVien db = new NhanVien();
+
+        private Model1 db = new Model1();
         [HttpGet]
-        [Route ("api/nv/ds")]
-        public List<NV> ds()
+        [Route("api/sv/ds")]
+        public List<SinhVien> ds()
         {
-            return db.NVs.ToList();
+            return db.SinhViens.ToList();
         }
         [HttpGet]
-        [Route("api/nv/timnv")]
-        public NV timnv(string MaNV)
+        [Route("api/sv/timnv")]
+        public SinhVien timsv(int MaSV)
         {
-            return db.NVs.SingleOrDefault(nv => nv.MaNV == MaNV);
+            return db.SinhViens.SingleOrDefault(nv => nv.MaSV == MaSV);
         }
         [HttpPost]
-        [Route ("api/nv/them")]
-        public bool them([FromBody] NV nv)
+        [Route("api/sv/them")]
+        public bool them([FromBody] SinhVien sv)
         {
             try
             {
-                db.NVs.Add(nv);
+                db.SinhViens.Add(sv);
                 db.SaveChanges();
                 return true;
 
             }
-            catch {
+            catch
+            {
                 return false;
             }
-            
+
         }
         [HttpPut]
-        [Route ("api/nv/sua")]
-        public bool sua([FromBody] NV nv)
+        [Route("api/sv/sua")]
+        public bool sua([FromBody] SinhVien sv)
         {
             try
             {
-                NV n = db.NVs.SingleOrDefault(x => x.MaNV == nv.MaNV);
-                n.MaNV = nv.MaNV;
-                n.TenNV = nv.TenNV;
-                n.HSLuong = nv.HSLuong;
+                SinhVien n = db.SinhViens.SingleOrDefault(x => x.MaSV == sv.MaSV);
+                n.MaSV = sv.MaSV;
+                n.TenSV = sv.TenSV;
+                n.HeSoLuong = sv.HeSoLuong;
                 db.SaveChanges();
                 return true;
             }
@@ -58,13 +60,13 @@ namespace CheckTest.Controllers
             }
         }
         [HttpDelete]
-        [Route("api/nv/xoa")]
-        public bool xoa(string ma)
+        [Route("api/sv/xoa")]
+        public bool xoa(int MaSV)
         {
-            NV n = db.NVs.SingleOrDefault(s => s.MaNV == ma);
+            SinhVien n = db.SinhViens.SingleOrDefault(s => s.MaSV == MaSV);
             if (n != null)
             {
-                db.NVs.Remove(n);
+                db.SinhViens.Remove(n);
                 db.SaveChanges();
                 return true;
 
